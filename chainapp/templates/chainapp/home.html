@@ -1,0 +1,98 @@
+{% extends "chainapp/base.html" %}
+{% block content %}
+    <div class="row">
+        <h3 class="col">home page</h3>
+    </div>
+    <div class="row">
+        <form method="GET" action="/">
+            <div class="form-check">
+                <input class="form-check-input" value="NIFTY" type="radio" name="q" id="flexRadioDefault1" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    NIFTY
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" value="FINNIFTY" type="radio" name="q" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    FINNIFTY
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" value="BANKNIFTY" type="radio" name="q" id="flexRadioDefault3">
+                <label class="form-check-label" for="flexRadioDefault3">
+                    BANKNIFTY 
+                </label>
+              </div>
+                <button class="btn btn-primary" type="submit">filter</button>
+        </form>
+        
+    </div>
+    <div class="row-4 align-items-stretch">
+        {% if datas %}
+        <p>last update: {{datas.0.starttime}}</p>
+        <table class="table table-hover table-bordered col-6">
+            <thead class="table-primary">
+                <tr>
+                    <th colspan="10" class="text-center">CALLS</th>
+                    <th></th>
+                    <th colspan="11" class="text-center">PUTS</th>
+                </tr>
+                <tr>
+                    <th class="text-center">OI</th>
+                    <th class="text-center">Chng in OI</th>
+                    <th class="text-center">Volume</th>
+                    <th class="text-center">IV</th>
+                    <th class="text-center">LTP</th>
+                    <th class="text-center">Chng</th>
+                    <th class="text-center">Bid Qty</th>
+                    <th class="text-center">Bid Price</th>
+                    <th class="text-center">Ask Price</th>
+                    <th class="text-center">Ask Qty</th>
+                    <th class="text-center">Strike Price</th>
+                    <th class="text-center">Bid Qty</th>
+                    <th class="text-center">Bid Price</th>
+                    <th class="text-center">Ask Price</th>
+                    <th class="text-center">Ask Qty</th>
+                    <th class="text-center">Chng</th>
+                    <th class="text-center">LTP</th>
+                    <th class="text-center">IV</th>
+                    <th class="text-center">Volume</th>
+                    <th class="text-center">Chng in OI</th>
+                    <th class="text-center">OI</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in datas %}
+                    <tr>
+                        <td class="text-center">{{data.CopenInterest|floatformat}}</td>
+                        <td class="text-center">{{data.CchangeinOpenInterest|floatformat}}</td>
+                        <td class="text-center">{{data.CtotalTradedVolume|floatformat}}</td>
+                        <td class="text-center">{{data.CimpliedVolatility|floatformat}}</td>
+                        <td class="text-center">{{data.ClastPrice|floatformat}}</td>
+                        <td class="text-center {% if data.Cchange < 0 %}text-danger{% else %}text-success{% endif %}">{{data.Cchange|floatformat:2}}</td>
+                        <td class="text-center">{{data.CbidQty|floatformat}}</td>
+                        <td class="text-center">{{data.Cbidprice|floatformat}}</td>
+                        <td class="text-center">{{data.CaskPrice|floatformat}}</td>
+                        <td class="text-center">{{data.CaskQty|floatformat}}</td>
+                        <td class="text-center">{{data.strikePrice|floatformat}}</td>
+                        <td class="text-center">{{data.PbidQty|floatformat}}</td>
+                        <td class="text-center">{{data.Pbidprice|floatformat}}</td>
+                        <td class="text-center">{{data.PaskPrice|floatformat}}</td>
+                        <td class="text-center">{{data.PaskQty|floatformat}}</td>
+                        <td class="text-center {% if data.Pchange < 0 %}text-danger{% else %}text-success{% endif %}">{{data.Pchange|floatformat:2}}</td>
+                        <td class="text-center">{{data.PlastPrice|floatformat}}</td>
+                        <td class="text-center">{{data.PimpliedVolatility|floatformat}}</td>
+                        <td class="text-center">{{data.PtotalTradedVolume|floatformat}}</td>
+                        <td class="text-center">{{data.PchangeinOpenInterest|floatformat}}</td>
+                        <td class="text-center">{{data.PopenInterest|floatformat}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>api problem</p>
+            <a href="{% url 'chain-home' %}">refresh page</a>
+        {% endif %}
+    </div>
+    
+{% endblock %}
